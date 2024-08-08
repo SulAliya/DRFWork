@@ -6,6 +6,7 @@ from materials.models import Course, Lesson
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons = SerializerMethodField()
+
     def get_lessons(self, course):
         return [lesson.title for lesson in Lesson.objects.filter(course=course)]
 
@@ -14,23 +15,30 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CourseDetailSerializer(serializers.ModelSerializer):
+    count_lessons = SerializerMethodField()
+
+    def get_count_lessons(self, course):
+        return Lesson.objects.filter(course=course).count()
+
+    class Meta:
+        model = Course
+        fields = ('title', 'course', 'count_lessons')
+
+
 class LessonDetailSerializer(serializers.ModelSerializer):
     count_lesson_with_same_course = SerializerMethodField()
 
-    def get_count_lesson_with_same_course(self, lesson):
-        return Lesson.objects.filter(lesson=lesson.course).count()
-
-    class Meta:
-        model = Lesson
-        fields = ('title', 'course', 'count_course_with_same_lesson')
+    # def get_count_lesson_with_same_course(self, lesson):
+    #     return Lesson.objects.filter(lesson=lesson.course).count()
+    #
+    # class Meta:
+    #     model = Lesson
+    #     fields = ('title', 'course', 'count_course_with_same_lesson')
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    # lessons =SerializerMethodField()
-    # def get_lessons(self, course):
-    #     return [course.title for course in Lesson.objects.filter(course=course)]
 
     class Meta:
         model = Lesson
         fields = '__all__'
-
