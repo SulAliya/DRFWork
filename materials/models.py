@@ -1,6 +1,8 @@
 
 from django.db import models
 
+from config import settings
+
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -9,6 +11,7 @@ class Course(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название', help_text='Укажите название')
     image_preview = models.ImageField(upload_to='materials/photo', verbose_name='Изображение (превью)', **NULLABLE)
     description = models.TextField(verbose_name='Описание', help_text='Опишите курс')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -24,6 +27,7 @@ class Lesson(models.Model):
     description = models.TextField(verbose_name='Описание', help_text='Опишите урок')
     link = models.URLField(max_length=300, verbose_name='Ссылка на видео', help_text='Укажите ссылку на видео', **NULLABLE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс', related_name='lessons', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.title
