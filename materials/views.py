@@ -37,7 +37,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class LessonViewSet(viewsets.ModelViewSet):
-
+    serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
 
 

@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 
 from materials.models import Course, Lesson, Subscription
 from materials.validators import YoutubeLinkValidator
@@ -9,6 +7,7 @@ from materials.validators import YoutubeLinkValidator
 
 class LessonSerializer(serializers.ModelSerializer):
     validators = [YoutubeLinkValidator(field='video')]
+
     class Meta:
         model = Lesson
         fields = '__all__'
